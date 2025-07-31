@@ -28,10 +28,7 @@ const CardPrato: FC<CardPratoProps> = (props) => {
             </a>
           </div>
         </div>
-        <img
-          src={props.imagem}
-          alt="Feijoada brasileira"
-        />
+        <img src={props.imagem} alt="Feijoada brasileira" />
         <h2 className="nome-prato">{props.nome}</h2>
         <p className="cozinha-prato">{props.cozinha}</p>
         <p className="descricao-curta-prato">{props.descricaoCurta}</p>
