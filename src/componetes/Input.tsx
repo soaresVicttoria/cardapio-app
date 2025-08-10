@@ -2,7 +2,7 @@ import React from "react";
 import "../estilos/Login.css";
 
 interface InputProps {
-  value: string;
+  value: string | number;
   errorMessage: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   placeholder?: string;

@@ -11,7 +11,7 @@ import Snackbar, { SnackbarState } from "./Snackbar";
 export default function Login() {
   const { values, errors, handleChange, validate } = useForm({
     email: "",
-    password: "",
+    senha: "",
   });
 
   const [snackbar, setSnackbar] = React.useState<SnackbarState>({
@@ -23,6 +23,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const login = async () => {
+    const duration = 3000;
     if (!validate) {
       return;
     }
@@ -33,7 +34,7 @@ export default function Login() {
         message: string;
       }>("/login", {
         email: values.email,
-        senha: values.password,
+        senha: values.senha,
       });
 
       const { token, refreshToken, message } = response.data;
@@ -41,7 +42,6 @@ export default function Login() {
       localStorage.setItem("token", token);
       localStorage.setItem("refreshToken", refreshToken);
 
-      const duration = 10000;
       setSnackbar({
         message: message || "Sucesso ao logar.",
         type: "success",
@@ -51,6 +51,7 @@ export default function Login() {
         navigate("/");
       }, duration);
     } catch (error: unknown) {
+      console.log(JSON.stringify(error));
       const axiosError = error as {
         response?: { data?: { message?: string } };
       };
@@ -58,7 +59,7 @@ export default function Login() {
         message:
           axiosError.response?.data?.message || "Erro ao realizar login.",
         type: "error",
-        duration: 10000,
+        duration: 3000,
       });
     }
   };
@@ -74,9 +75,9 @@ export default function Login() {
         placeholder="Email"
       />
       <Input
-        value={values.password}
-        errorMessage={errors.password}
-        onChange={handleChange("password")}
+        value={values.senha}
+        errorMessage={errors.senha}
+        onChange={handleChange("senha")}
         type="password"
         placeholder="Senha"
       />
