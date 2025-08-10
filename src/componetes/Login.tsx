@@ -23,7 +23,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const login = async () => {
-    const duration = 10000;
+    const duration = 3000;
     if (!validate) {
       return;
     }
@@ -51,6 +51,7 @@ export default function Login() {
         navigate("/");
       }, duration);
     } catch (error: unknown) {
+      console.log(JSON.stringify(error));
       const axiosError = error as {
         response?: { data?: { message?: string } };
       };
@@ -58,7 +59,7 @@ export default function Login() {
         message:
           axiosError.response?.data?.message || "Erro ao realizar login.",
         type: "error",
-        duration: 10000,
+        duration: 3000,
       });
     }
   };

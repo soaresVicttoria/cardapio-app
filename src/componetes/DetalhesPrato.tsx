@@ -1,34 +1,59 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import "../estilos/DetalhesPrato.css"; // Importando o CSS específico para o componente
+import { useParams, Link } from "react-router-dom";
+import api from "../http/api";
+import { Prato } from "../interfaces";
 
 function DetalhesPrato() {
+  const { id } = useParams<{ id: string }>();
+  const [prato, setPrato] = useState<Prato>();
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await api.get(`/pratos/${id}`);
+        const { data } = response;
+
+        setPrato(data);
+      } catch (error: any) {
+        console.error("Erro ao carregar o prato: ", error);
+      }
+    }
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
+  console.log(prato);
+  if (!prato) {
+    return <div>Prato não encontrado</div>;
+  }
+
   return (
     <>
       <div className="detalhes-prato">
         <div className="detalhes-prato-card">
           <div className="detalhes-prato-card-header">
-            <img
-              src="https://media.istockphoto.com/id/899497396/pt/foto/delicious-brazilian-feijoada.jpg?s=2048x2048&w=is&k=20&c=OO_JGRT2AgsybJxSFB-mFP2vsOn7QtsbqEd1sZiUzuw="
-              alt="imagem de feijoada"
-            />
+            <img src={prato.imagem} alt={prato.nome} />
             <div className="detalhes-prato-card-header-texto">
-              <h1>Feijoada</h1>
+              <h1>{prato.nome}</h1>
               <p>
-                <strong>Cozinha:</strong>Brasileira
+                <strong>Cozinha: </strong>
+                {prato.cozinha}
               </p>
               <p>
-                <strong>Valor:</strong> R$28,00
+                <strong>Valor: </strong>
+                R${prato.valor}
               </p>
             </div>
           </div>
           <p>
-            <strong>Descrição da sua experiência Gastronômica:</strong> Sinta o
-            sabor inigualável de nossa feijoada, preparada com ingredientes
-            selecionados e tempero único que te leva à sensação de estar
-            desfrutando dessa experiência gastronômica em uma fazenda lá no
-            interior.
+            <strong>Descrição da sua experiência Gastronômica:</strong>
+            {prato.descricao_detalhada}
           </p>
-          <button onClick={() => {}}>Voltar</button>
+          <Link to={"/"}>
+            <button>Voltar</button>
+          </Link>
         </div>
       </div>
     </>
